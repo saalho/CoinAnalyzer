@@ -84,7 +84,6 @@ function bearish(data){
 	var prices = daysValue(data.prices);
 	console.log(prices)
 	var currentSet=[];
-	currentSet.push(prices[0]);
 	var compareSet=[];
 
 	let lastDataPrice = prices[0][1];
@@ -103,7 +102,7 @@ function bearish(data){
 		lastDataPrice = prices[i][1];
 	}
 	console.log(currentSet, compareSet);
-	if (currentSet.length >= compareSet.length){
+	if (currentSet.length > compareSet.length){
 		return currentSet;
 	}
 	else 
