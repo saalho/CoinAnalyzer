@@ -56,8 +56,8 @@ function createAnalysis(data){
 
 //Create an url string with correct parameters
 function createUrl(startdate,enddate){
-	enddate = enddate.concat(" 01:00:00");
-	url = `${apiBitcoin}&from=${convertDateToUnix(startdate)}&to=${convertDateToUnix(enddate)}`;
+	enddate = convertDateToUnix(enddate) + 3600;
+	url = `${apiBitcoin}&from=${convertDateToUnix(startdate)}&to=${enddate}`;
 	console.log(url);
 	return url;
 }
@@ -82,7 +82,9 @@ async function getData(url){
 //Get longest downward trend in an array from the API data.
 function bearish(data){
 	var prices = daysValue(data.prices);
+	console.log(prices)
 	var currentSet=[];
+	currentSet.push(prices[0]);
 	var compareSet=[];
 
 	let lastDataPrice = prices[0][1];
@@ -90,17 +92,18 @@ function bearish(data){
 		if (prices[i][1] < lastDataPrice){
 			currentSet.push(prices[i]);
 		}
-		else if (prices[i][1] > lastDataPrice && currentSet.length >= compareSet.length){
+		else if (prices[i][1] >= lastDataPrice && currentSet.length >= compareSet.length){
 			compareSet = [];
 			compareSet = currentSet;
 			currentSet = [];
 		}
-		else if(prices[i][1] > lastDataPrice && currentSet.length < compareSet.length){
+		else if(prices[i][1] >= lastDataPrice && currentSet.length < compareSet.length){
 			currentSet = [];
 		}			
 		lastDataPrice = prices[i][1];
 	}
-	if (currentSet.length > compareSet.length){
+	console.log(currentSet, compareSet);
+	if (currentSet.length >= compareSet.length){
 		return currentSet;
 	}
 	else 
@@ -111,6 +114,7 @@ function bearish(data){
 //Assuming that the best dates to buy and sell are determined by the price of the coin.
 function buy(data){
 	var prices = daysValue(data.prices);
+	console.log(prices);
 	let compareValue = prices[0][1];
 	var lowestPrice = [];
 	lowestPrice.push(prices[0]);
@@ -124,7 +128,7 @@ function buy(data){
 		}
 		
 	}
-	if (downtrendCounter === prices.length-1){
+	if (downtrendCounter === prices.length){
 		var values = 0;
 	}
 	else{
@@ -150,7 +154,7 @@ function sell(data){
 			downtrendCounter++;
 		
 	}
-	if (downtrendCounter === prices.length-1){
+	if (downtrendCounter === prices.length){
 		var values = 0;
 	}
 	else{
@@ -178,16 +182,12 @@ function tradeVolume(data){
 function daysValue(data){
 	var lastDate = convertDateFromUnix(data[0][0]);
 	var daysArray = [];
-	var dayCounter = 1;
 	for (i=0; i < data.length; i++){
 		if (lastDate.getUTCDay() !== convertDateFromUnix(data[i][0]).getUTCDay()){
 			daysArray.push(data[i-1]);
-			dayCounter++;
 		}
 			
 		lastDate = convertDateFromUnix(data[i][0]);
 	}
-	if (dayCounter > daysArray.length)
-		daysArray.push(data[data.length-1])
 	return daysArray;
 }
