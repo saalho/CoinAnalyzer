@@ -1,0 +1,8 @@
+body{
+	font-family: sans-serif;
+	margin: 5px;
+}
+#resultbox{
+	display: none;
+	margin: black 1px;
+}

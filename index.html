@@ -1,0 +1,48 @@
+<!--
+File: index.html
+Author: Saara Alho
+Created: 30.12.2021
+Description: The HTML page with the application's user interface.
+!-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+		<meta charset="utf-8" />
+		<title>CoinAnalyzer</title>
+		<link rel="stylesheet" type="text/css" href="./style.css"/>
+		<script type="text/javascript" src="./functionality.js"></script>
+		
+	</head>
+	<body>
+		<div id="headerbox">
+			<h1>BitCoin history analyzer</h1>
+			<p>Please fill the start and end date of analysis</p>
+		</div>
+		<div id="formbox">
+			<form onload="today()">
+				<label for="startdate">Start date</label>
+				<input type="date" id="startdate" name="startdate" min="2009-01-03" required />
+				</br>
+				<label for="enddate">End date</label>
+				<input type="date" id="enddate" name="enddate" min="2009-01-03" required />
+				</br>
+				
+			</form>
+			<button onclick="getDates()">Submit</button>
+		</div>
+		<div id="resultbox">
+			<h5>Analysis of dates</h5>
+			<h5>Longest downward trend:</h5>
+			<p id="bearish"></p>
+			<h5>Highest trading volume:</h5>
+			<p id="trading"></p>
+			<h5>Best day to buy:</h5>
+			<p id="buy"></p>
+			<h5>Best day to sell:</h5>
+			<p id="sell"></p>
+		</div>
+		
+		<script></script>
+	</body>
+</html>
